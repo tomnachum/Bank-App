@@ -1,0 +1,5 @@
+USERS_TABLE_NAME = "users"
+TRANSACTIONS_TABLE_NAME = "transactions"
+CATEGORIES_TABLE_NAME = "categories"
+DB_NAME = "bank"
+DATA_DIR = "server/db/utils/data.json"
