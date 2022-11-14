@@ -1,0 +1,87 @@
+{
+  "categories": [
+    { "id": 0, "name": "Housing" },
+    { "id": 1, "name": "Transportation" },
+    { "id": 2, "name": "Food" },
+    { "id": 3, "name": "Utilities" },
+    { "id": 4, "name": "Insurance" },
+    { "id": 5, "name": "Medical & Healthcare" },
+    { "id": 6, "name": "Investing" },
+    { "id": 7, "name": "Gifts" },
+    { "id": 8, "name": "Entertainment" },
+    { "id": 9, "name": "Car" }
+  ],
+  "users": [{ "id": 0, "name": "Matan", "balance": 0 }],
+  "transactions": [
+    {
+      "id": 0,
+      "amount": 50,
+      "vendor": "Chick & Pick",
+      "categoryId": 2,
+      "userId": 0
+    },
+    {
+      "id": 1,
+      "amount": 499.9,
+      "vendor": "Super Pharm",
+      "categoryId": 5,
+      "userId": 0
+    },
+    {
+      "id": 2,
+      "amount": 3000,
+      "vendor": "Rent",
+      "categoryId": 0,
+      "userId": 0
+    },
+    {
+      "id": 3,
+      "amount": 279.9,
+      "vendor": "Lior",
+      "categoryId": 3,
+      "userId": 0
+    },
+    {
+      "id": 4,
+      "amount": 20,
+      "vendor": "Eged",
+      "categoryId": 1,
+      "userId": 0
+    },
+    {
+      "id": 5,
+      "amount": 489.9,
+      "vendor": "Agam Liderim",
+      "categoryId": 6,
+      "userId": 0
+    },
+    {
+      "id": 6,
+      "amount": 39.9,
+      "vendor": "Golf",
+      "categoryId": 7,
+      "userId": 0
+    },
+    {
+      "id": 7,
+      "amount": 100,
+      "vendor": "Zer4U",
+      "categoryId": 7,
+      "userId": 0
+    },
+    {
+      "id": 8,
+      "amount": 129.9,
+      "vendor": "Teder",
+      "categoryId": 8,
+      "userId": 0
+    },
+    {
+      "id": 9,
+      "amount": 70,
+      "vendor": "Shalvata",
+      "categoryId": 8,
+      "userId": 0
+    }
+  ]
+}
