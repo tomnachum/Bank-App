@@ -35,7 +35,6 @@ class mySQLManager:
 
     def add_user(self, id, name, balance):
         query = q.insert_into_users(id, name, balance)
-        print(query)
         self._execute_query(query)
 
     def add_category(self, id, name):
@@ -44,5 +43,4 @@ class mySQLManager:
 
     def add_transaction(self, id, amount, vendor, categoryId, userId):
         query = q.insert_into_transactions(id, amount, vendor, categoryId, userId)
-        print(query)
         self._execute_query(query)

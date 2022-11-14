@@ -76,7 +76,7 @@ def init_transactions_table(db, transactions):
 
 
 def init_tables():
-    db = mySQLManager()
+    db = mySQLManager(DB_NAME)
     data = get_data_from_json()
     users = data.get("users", [])
     init_users_table(db, users)
@@ -87,6 +87,11 @@ def init_tables():
 
 
 if __name__ == "__main__":
+    print("########## Creating DB")
     create_db()
+    print()
+    print("########## Creating Tables")
     create_tables()
+    print()
+    print("########## Initializing Tables")
     init_tables()
