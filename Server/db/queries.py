@@ -16,19 +16,19 @@ create_db = f"""
 
 create_users_table = f"""
             CREATE TABLE IF NOT EXISTS users(
-                id INT NOT NULL,
+                id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255),
                 balance FLOAT,
-                PRIMARY KEY(id, name)
+                UNIQUE (name)
                 );
             """
 
 
 create_categories_table = f"""
             CREATE TABLE IF NOT EXISTS {c.CATEGORIES_TABLE_NAME}(
-                id INT NOT NULL,
+                id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255),
-                PRIMARY KEY(id, name)
+                UNIQUE (name)
                 );
             """
 
