@@ -1,14 +1,16 @@
 import json
 import utils.constants as c
-from my_sql_manager import mySQLManager
-from objects.user import User
-from objects.category import Category
-from objects.transaction import Transaction
+from my_sql_manager import MySqlManager
 from utils.connection import get_connection_to_db, get_general_connection
 from queries.general_queries import create_db as q_create_db, delete_db
 from queries.categories_queries import create_categories_table
 from queries.transactions_queries import create_transactions_table
 from queries.users_queries import create_users_table
+from objects.raw_data_to_object import (
+    extract_category,
+    extract_transaction,
+    extract_user,
+)
 
 
 def create_db():
@@ -48,35 +50,27 @@ def get_data_from_json():
 
 def init_users_table(db, users_data):
     for user_data in users_data:
-        name = user_data.get(c.USER_NAME, None)
-        balance = user_data.get(c.USER_BALANCE, 0)
-        user = User(name, balance)
+        user = extract_user(user_data)
         db.add_user(user)
     print("initialized users table successfully")
 
 
 def init_categories_table(db, categories_data):
     for category_data in categories_data:
-        name = category_data.get(c.CATEGORY_NAME, None)
-        category = Category(name)
+        category = extract_category(category_data)
         db.add_category(category)
     print("initialized categories table successfully")
 
 
 def init_transactions_table(db, transactions_data):
     for transaction_data in transactions_data:
-        amount = transaction_data.get(c.TRANSACTION_AMOUNT, 0)
-        vendor = transaction_data.get(c.TRANSACTION_VENDOR, None)
-        date = transaction_data.get(c.TRANSACTION_DATE, None)
-        categoryId = transaction_data.get(c.TRANSACTION_CATEGORY_ID, 0)
-        userId = transaction_data.get(c.TRANSACTION_USER_ID, 0)
-        transaction = Transaction(amount, vendor, categoryId, userId, date)
+        transaction = extract_transaction(transaction_data)
         db.add_transaction(transaction)
     print("initialized transactions table successfully")
 
 
 def init_tables():
-    db = mySQLManager(c.DB_NAME)
+    db = MySqlManager(c.DB_NAME)
     data = get_data_from_json()
     users_data = data.get(c.USERS_TABLE_NAME, [])
     init_users_table(db, users_data)
