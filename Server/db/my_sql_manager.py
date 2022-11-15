@@ -1,10 +1,10 @@
-import pymysql
-import queries as q
 from objects.user import User
 from objects.category import Category
 from objects.transaction import Transaction
-import utils.constants as c
 from utils.connection import get_connection_to_db
+from queries.categories_queries import *
+from queries.transactions_queries import *
+from queries.users_queries import *
 
 
 class mySQLManager:
@@ -23,13 +23,13 @@ class mySQLManager:
             return result
 
     def add_user(self, user: User):
-        query = q.insert_into_users(user)
+        query = insert_into_users(user)
         self._execute_query(query)
 
     def add_category(self, category: Category):
-        query = q.insert_into_categories(category)
+        query = insert_into_categories(category)
         self._execute_query(query)
 
     def add_transaction(self, transaction: Transaction):
-        query = q.insert_into_transactions(transaction)
+        query = insert_into_transactions(transaction)
         self._execute_query(query)

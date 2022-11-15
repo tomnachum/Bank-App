@@ -1,11 +1,14 @@
-import queries as q
-import utils.constants as c
 import json
+import utils.constants as c
 from my_sql_manager import mySQLManager
 from objects.user import User
 from objects.category import Category
 from objects.transaction import Transaction
 from utils.connection import get_connection_to_db, get_general_connection
+from queries.general_queries import create_db as q_create_db, delete_db
+from queries.categories_queries import create_categories_table
+from queries.transactions_queries import create_transactions_table
+from queries.users_queries import create_users_table
 
 
 def create_db():
@@ -13,8 +16,8 @@ def create_db():
         connection = get_general_connection()
         with connection.cursor() as cursor:
             # in case db already exist, delete it first
-            cursor.execute(q.delete_db)
-            cursor.execute(q.create_db)
+            cursor.execute(delete_db)
+            cursor.execute(q_create_db)
             print("db created successfully")
             connection.commit()
     except Exception as e:
@@ -25,11 +28,11 @@ def create_tables():
     try:
         connection = get_connection_to_db(c.DB_NAME)
         with connection.cursor() as cursor:
-            cursor.execute(q.create_categories_table)
+            cursor.execute(create_categories_table)
             print("categories table created successfully")
-            cursor.execute(q.create_users_table)
+            cursor.execute(create_users_table)
             print("users table created successfully")
-            cursor.execute(q.create_transactions_table)
+            cursor.execute(create_transactions_table)
             print("transactions table created successfully")
             connection.commit()
     except Exception as e:
