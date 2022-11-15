@@ -6,12 +6,9 @@ import queries.categories_queries as categories_queries
 import queries.transactions_queries as transactions_queries
 import queries.users_queries as users_queries
 from db_manager import DataBaseManager
-from objects.raw_data_to_object import (
-    extract_category,
-    extract_transaction,
-    extract_user,
-)
+from objects.raw_data_to_object import extract_transaction
 from typing import List, Dict
+import utils.constants as c
 
 
 class MySqlManager(DataBaseManager):
@@ -56,9 +53,14 @@ class MySqlManager(DataBaseManager):
     def get_breakdown_by_categories(self) -> Dict[str, float]:
         query = transactions_queries.get_amount_by_category
         data = self._execute_query(query)
-        print(data)
+        categories_total = dict()
+        for item in data:
+            category_name = item.get(c.CATEGORY, "")
+            total_amount = float(item.get(c.TOTAL_AMOUNT, 0))
+            categories_total[category_name] = total_amount
+        return categories_total
 
 
 if __name__ == "__main__":
     db = MySqlManager("bank")
-    db.get_breakdown_by_categories()
+    print(db.get_breakdown_by_categories())
