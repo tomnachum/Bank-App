@@ -1,4 +1,7 @@
 class Category:
-    def __init__(self, id: int, name: str) -> None:
-        self.id = id
+    id = 0
+
+    def __init__(self, name: str) -> None:
+        self.id = Category.id
         self.name = name
+        Category.id += 1

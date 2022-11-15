@@ -45,32 +45,29 @@ def get_data_from_json():
 
 def init_users_table(db, users_data):
     for user_data in users_data:
-        id = user_data.get(c.USER_ID, 0)
         name = user_data.get(c.USER_NAME, None)
         balance = user_data.get(c.USER_BALANCE, 0)
-        user = User(id, name, balance)
+        user = User(name, balance)
         db.add_user(user)
     print("initialized users table successfully")
 
 
 def init_categories_table(db, categories_data):
     for category_data in categories_data:
-        id = category_data.get(c.CATEGORY_ID, 0)
         name = category_data.get(c.CATEGORY_NAME, None)
-        category = Category(id, name)
+        category = Category(name)
         db.add_category(category)
     print("initialized categories table successfully")
 
 
 def init_transactions_table(db, transactions_data):
     for transaction_data in transactions_data:
-        id = transaction_data.get(c.TRANSACTION_ID, 0)
         amount = transaction_data.get(c.TRANSACTION_AMOUNT, 0)
         vendor = transaction_data.get(c.TRANSACTION_VENDOR, None)
         date = transaction_data.get(c.TRANSACTION_DATE, None)
         categoryId = transaction_data.get(c.TRANSACTION_CATEGORY_ID, 0)
         userId = transaction_data.get(c.TRANSACTION_USER_ID, 0)
-        transaction = Transaction(id, amount, vendor, categoryId, userId, date)
+        transaction = Transaction(amount, vendor, categoryId, userId, date)
         db.add_transaction(transaction)
     print("initialized transactions table successfully")
 
