@@ -1,5 +1,8 @@
 import pymysql
 import queries as q
+from objects.user import User
+from objects.category import Category
+from objects.transaction import Transaction
 
 
 class mySQLManager:
@@ -15,9 +18,11 @@ class mySQLManager:
             charset="utf8",
             cursorclass=pymysql.cursors.DictCursor,
         )
+        self.connection.autocommit(True)
 
     def _execute_select_query(self, query):
         try:
+            self.connection.ping()
             with self.connection.cursor() as cursor:
                 cursor.execute(query)
                 result = cursor.fetchall()
@@ -27,20 +32,21 @@ class mySQLManager:
 
     def _execute_query(self, query):
         try:
+            self.connection.ping()
             with self.connection.cursor() as cursor:
                 cursor.execute(query)
                 self.connection.commit()
         except Exception as e:
             print(e)
 
-    def add_user(self, id, name, balance):
-        query = q.insert_into_users(id, name, balance)
+    def add_user(self, user: User):
+        query = q.insert_into_users(user)
         self._execute_query(query)
 
-    def add_category(self, id, name):
-        query = q.insert_into_categories(id, name)
+    def add_category(self, category: Category):
+        query = q.insert_into_categories(category)
         self._execute_query(query)
 
-    def add_transaction(self, id, amount, vendor, categoryId, userId):
-        query = q.insert_into_transactions(id, amount, vendor, categoryId, userId)
+    def add_transaction(self, transaction: Transaction):
+        query = q.insert_into_transactions(transaction)
         self._execute_query(query)

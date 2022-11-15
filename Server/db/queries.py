@@ -1,4 +1,7 @@
 import utils.constants as c
+from objects.user import User
+from objects.category import Category
+from objects.transaction import Transaction
 
 
 delete_db = f"""
@@ -15,7 +18,7 @@ create_users_table = f"""
             CREATE TABLE IF NOT EXISTS users(
                 id INT NOT NULL,
                 name VARCHAR(255),
-                balance INT,
+                balance FLOAT,
                 PRIMARY KEY(id, name)
                 );
             """
@@ -32,8 +35,9 @@ create_categories_table = f"""
 create_transactions_table = f"""
             CREATE TABLE IF NOT EXISTS {c.TRANSACTIONS_TABLE_NAME}(
                 id INT NOT NULL PRIMARY KEY,
-                amount INT,
+                amount FLOAT,
                 vendor VARCHAR(255),
+                date VARCHAR(255),
                 categoryId INT,
                 userId INT,
                 FOREIGN KEY(categoryId) REFERENCES {c.CATEGORIES_TABLE_NAME}(id),
@@ -42,22 +46,22 @@ create_transactions_table = f"""
             """
 
 
-def insert_into_users(id, name, balance):
+def insert_into_users(user: User):
     return f"""
             INSERT IGNORE INTO {c.USERS_TABLE_NAME} VALUES
-            ({id}, '{name}', {balance})
+            ({user.id}, '{user.name}', {user.balance})
     """
 
 
-def insert_into_categories(id, name):
+def insert_into_categories(category: Category):
     return f"""
             INSERT IGNORE INTO {c.CATEGORIES_TABLE_NAME} VALUES
-            ({id}, '{name}')
+            ({category.id}, '{category.name}')
     """
 
 
-def insert_into_transactions(id, amount, vendor, categoryId, userId):
+def insert_into_transactions(transaction: Transaction):
     return f"""
             INSERT IGNORE INTO {c.TRANSACTIONS_TABLE_NAME} VALUES
-            ({id}, {amount}, '{vendor}', {categoryId}, {userId})
+            ({transaction.id}, {transaction.amount}, '{transaction.vendor}', '{transaction.date}', {transaction.categoryId}, {transaction.userId})
     """
