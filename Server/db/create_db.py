@@ -1,6 +1,6 @@
 import pymysql
 import queries as q
-from utils.constants import DB_NAME, DATA_DIR
+import utils.constants as c
 import json
 from my_sql_manager import mySQLManager
 from objects.user import User
@@ -23,11 +23,11 @@ def create_db():
 
 def create_tables():
     connection = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="",
-        db=DB_NAME,
-        charset="utf8",
+        host=c.CONNECTION_HOST,
+        user=c.CONNECTION_USER,
+        password=c.CONNECTION_PASSWORD,
+        db=c.DB_NAME,
+        charset=c.CONNECTION_CHARSET,
         cursorclass=pymysql.cursors.DictCursor,
     )
     try:
@@ -44,7 +44,7 @@ def create_tables():
 
 
 def get_data_from_json():
-    data_file = open(DATA_DIR)
+    data_file = open(c.DATA_DIR)
     data = json.load(data_file)
     data_file.close()
     return data
@@ -52,9 +52,9 @@ def get_data_from_json():
 
 def init_users_table(db, users_data):
     for user_data in users_data:
-        id = user_data.get("id", 0)
-        name = user_data.get("name", None)
-        balance = user_data.get("balance", 0)
+        id = user_data.get(c.USER_ID, 0)
+        name = user_data.get(c.USER_NAME, None)
+        balance = user_data.get(c.USER_BALANCE, 0)
         user = User(id, name, balance)
         db.add_user(user)
     print("initialized users table successfully")
@@ -62,8 +62,8 @@ def init_users_table(db, users_data):
 
 def init_categories_table(db, categories_data):
     for category_data in categories_data:
-        id = category_data.get("id", 0)
-        name = category_data.get("name", None)
+        id = category_data.get(c.CATEGORY_ID, 0)
+        name = category_data.get(c.CATEGORY_NAME, None)
         category = Category(id, name)
         db.add_category(category)
     print("initialized categories table successfully")
@@ -71,25 +71,25 @@ def init_categories_table(db, categories_data):
 
 def init_transactions_table(db, transactions_data):
     for transaction_data in transactions_data:
-        id = transaction_data.get("id", 0)
-        amount = transaction_data.get("amount", 0)
-        vendor = transaction_data.get("vendor", None)
-        date = transaction_data.get("date", None)
-        categoryId = transaction_data.get("categoryId", 0)
-        userId = transaction_data.get("userId", 0)
+        id = transaction_data.get(c.TRANSACTION_ID, 0)
+        amount = transaction_data.get(c.TRANSACTION_AMOUNT, 0)
+        vendor = transaction_data.get(c.TRANSACTION_VENDOR, None)
+        date = transaction_data.get(c.TRANSACTION_DATE, None)
+        categoryId = transaction_data.get(c.TRANSACTION_CATEGORY_ID, 0)
+        userId = transaction_data.get(c.TRANSACTION_USER_ID, 0)
         transaction = Transaction(id, amount, vendor, categoryId, userId, date)
         db.add_transaction(transaction)
     print("initialized transactions table successfully")
 
 
 def init_tables():
-    db = mySQLManager(DB_NAME)
+    db = mySQLManager(c.DB_NAME)
     data = get_data_from_json()
-    users_data = data.get("users", [])
+    users_data = data.get(c.USERS_TABLE_NAME, [])
     init_users_table(db, users_data)
-    categories_data = data.get("categories", [])
+    categories_data = data.get(c.CATEGORIES_TABLE_NAME, [])
     init_categories_table(db, categories_data)
-    transactions_data = data.get("transactions", [])
+    transactions_data = data.get(c.TRANSACTIONS_TABLE_NAME, [])
     init_transactions_table(db, transactions_data)
 
 

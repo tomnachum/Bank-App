@@ -3,6 +3,7 @@ import queries as q
 from objects.user import User
 from objects.category import Category
 from objects.transaction import Transaction
+import utils.constants as c
 
 
 class mySQLManager:
@@ -11,11 +12,11 @@ class mySQLManager:
         This class assumes that the DB is already created.
         """
         self.connection = pymysql.connect(
-            host="localhost",
-            user="root",
-            password="",
+            host=c.CONNECTION_HOST,
+            user=c.CONNECTION_USER,
+            password=c.CONNECTION_PASSWORD,
             db=db_name,
-            charset="utf8",
+            charset=c.CONNECTION_CHARSET,
             cursorclass=pymysql.cursors.DictCursor,
         )
         self.connection.autocommit(True)
