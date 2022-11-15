@@ -15,24 +15,12 @@ class mySQLManager:
         self.connection = get_connection_to_db(db_name)
         self.connection.autocommit(True)
 
-    def _execute_select_query(self, query):
-        try:
-            self.connection.ping()
-            with self.connection.cursor() as cursor:
-                cursor.execute(query)
-                result = cursor.fetchall()
-                return result
-        except Exception as e:
-            print(e)
-
     def _execute_query(self, query):
-        try:
-            self.connection.ping()
-            with self.connection.cursor() as cursor:
-                cursor.execute(query)
-                self.connection.commit()
-        except Exception as e:
-            print(e)
+        self.connection.ping()
+        with self.connection.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+            return result
 
     def add_user(self, user: User):
         query = q.insert_into_users(user)
