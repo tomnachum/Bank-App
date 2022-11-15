@@ -4,6 +4,7 @@ from objects.user import User
 from objects.category import Category
 from objects.transaction import Transaction
 import utils.constants as c
+from utils.connection import get_connection_to_db
 
 
 class mySQLManager:
@@ -11,14 +12,7 @@ class mySQLManager:
         """
         This class assumes that the DB is already created.
         """
-        self.connection = pymysql.connect(
-            host=c.CONNECTION_HOST,
-            user=c.CONNECTION_USER,
-            password=c.CONNECTION_PASSWORD,
-            db=db_name,
-            charset=c.CONNECTION_CHARSET,
-            cursorclass=pymysql.cursors.DictCursor,
-        )
+        self.connection = get_connection_to_db(db_name)
         self.connection.autocommit(True)
 
     def _execute_select_query(self, query):

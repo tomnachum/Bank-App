@@ -1,4 +1,3 @@
-import pymysql
 import queries as q
 import utils.constants as c
 import json
@@ -6,11 +5,12 @@ from my_sql_manager import mySQLManager
 from objects.user import User
 from objects.category import Category
 from objects.transaction import Transaction
+from utils.connection import get_connection_to_db, get_general_connection
 
 
 def create_db():
-    connection = pymysql.connect(host="localhost", user="root", password="")
     try:
+        connection = get_general_connection()
         with connection.cursor() as cursor:
             # in case db already exist, delete it first
             cursor.execute(q.delete_db)
@@ -22,15 +22,8 @@ def create_db():
 
 
 def create_tables():
-    connection = pymysql.connect(
-        host=c.CONNECTION_HOST,
-        user=c.CONNECTION_USER,
-        password=c.CONNECTION_PASSWORD,
-        db=c.DB_NAME,
-        charset=c.CONNECTION_CHARSET,
-        cursorclass=pymysql.cursors.DictCursor,
-    )
     try:
+        connection = get_connection_to_db(c.DB_NAME)
         with connection.cursor() as cursor:
             cursor.execute(q.create_categories_table)
             print("categories table created successfully")
