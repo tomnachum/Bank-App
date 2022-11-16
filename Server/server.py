@@ -46,5 +46,11 @@ def delete_transaction(id: int):
         )
 
 
+@app.get("/categories/breakdown", status_code=status.HTTP_200_OK)
+def get_categories_breakdown():
+    breakdown = db_manager.get_breakdown_by_categories()
+    return {"breakdown": breakdown}
+
+
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
