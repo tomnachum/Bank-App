@@ -27,14 +27,7 @@ class MySqlManager(DataBaseManager):
             result = cursor.fetchall()
             return result
 
-    def add_user(self, user: User) -> None:
-        query = insert_into_users(user)
-        self._execute_query(query)
-
-    def add_category(self, category: Category) -> None:
-        query = insert_into_categories(category)
-        self._execute_query(query)
-
+    # transactions operations
     def add_transaction(self, transaction: Transaction) -> None:
         if not self._is_category_exist(transaction.categoryId):
             raise CategoryIdNotExist()
@@ -43,15 +36,11 @@ class MySqlManager(DataBaseManager):
         query = insert_into_transactions(transaction)
         self._execute_query(query)
 
-    def _is_category_exist(self, category_id: int) -> bool:
-        query = get_category_by_id(category_id)
-        result = self._execute_query(query)
-        return len(result) != 0
-
-    def _is_user_exist(self, user_id: int) -> bool:
-        query = get_user_by_id(user_id)
-        result = self._execute_query(query)
-        return len(result) != 0
+    def delete_transaction(self, transaction_id: int) -> None:
+        if not self._is_transaction_exist(transaction_id):
+            raise TransactionIdNotExist()
+        query = delete_transaction_by_id(transaction_id)
+        self._execute_query(query)
 
     def _is_transaction_exist(self, transaction_id: int) -> bool:
         query = get_transaction_by_id(transaction_id)
@@ -66,12 +55,32 @@ class MySqlManager(DataBaseManager):
             for transaction_data in transactions_data
         ]
 
-    def delete_transaction(self, transaction_id: int) -> None:
-        if not self._is_transaction_exist(transaction_id):
-            raise TransactionIdNotExist()
-        query = delete_transaction_by_id(transaction_id)
+    # users operations
+    def add_user(self, user: User) -> None:
+        query = insert_into_users(user)
         self._execute_query(query)
 
+    def _is_user_exist(self, user_id: int) -> bool:
+        query = get_user_by_id(user_id)
+        result = self._execute_query(query)
+        return len(result) != 0
+
+    # categories operations
+    def add_category(self, category: Category) -> None:
+        query = insert_into_categories(category)
+        self._execute_query(query)
+
+    def _is_category_exist(self, category_id: int) -> bool:
+        query = get_category_by_id(category_id)
+        result = self._execute_query(query)
+        return len(result) != 0
+
+    def get_all_categories(self) -> List[Category]:
+        query = get_all_categories
+        categories_data = self._execute_query(query)
+        return [extract_category(category_data) for category_data in categories_data]
+
+    # other operations
     def get_breakdown_by_categories(self) -> Dict[str, float]:
         query = get_amount_by_category
         data = self._execute_query(query)
@@ -81,8 +90,3 @@ class MySqlManager(DataBaseManager):
             total_amount = float(item.get(TOTAL_AMOUNT, 0))
             categories_total[category_name] = total_amount
         return categories_total
-
-    def get_all_categories(self) -> List[Category]:
-        query = get_all_categories
-        categories_data = self._execute_query(query)
-        return [extract_category(category_data) for category_data in categories_data]
