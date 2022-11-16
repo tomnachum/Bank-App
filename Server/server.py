@@ -1,13 +1,31 @@
 from fastapi import FastAPI, Request, Response, status
+from fastapi.responses import JSONResponse
 import uvicorn
 import requests
+from db import MySqlManager, DB_NAME, extract_transaction, Transaction
+import json
 
 app = FastAPI()
+db_manager = MySqlManager(DB_NAME)
 
 
 @app.get("/sanity")
-def get_html():
+def sanity_check():
     return {"Message": "Hello World"}
+
+
+@app.get("/transactions", status_code=status.HTTP_200_OK)
+def get_transactions():
+    transactions = db_manager.get_all_transactions()
+    return {"transactions": transactions}
+
+
+@app.post("/transactions", status_code=status.HTTP_200_OK)
+async def add_transaction(request: Request):
+    transaction_data = await request.json()
+    transaction = extract_transaction(transaction_data)
+    db_manager.add_transaction(transaction)
+    return {"Message": "Transaction added successfully"}
 
 
 # @app.get("/check")

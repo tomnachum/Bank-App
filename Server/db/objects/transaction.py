@@ -11,8 +11,9 @@ class Transaction:
         categoryId: int,
         userId: int,
         date: str = None,
+        id: int = None,
     ) -> None:
-        self.id = Transaction.id
+        self.id = id if id is not None else Transaction.id
         self.amount = amount
         self.vendor = vendor
         self.categoryId = categoryId
