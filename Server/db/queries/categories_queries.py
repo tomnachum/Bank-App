@@ -15,3 +15,11 @@ def insert_into_categories(category: Category):
             INSERT IGNORE INTO {CATEGORIES_TABLE_NAME} VALUES
             ({category.id}, '{category.name}')
     """
+
+
+def get_category_by_id(categoryId: int):
+    return f"""
+        SELECT *
+        FROM {CATEGORIES_TABLE_NAME}
+        WHERE id={categoryId}
+    """

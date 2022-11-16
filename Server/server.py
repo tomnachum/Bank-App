@@ -1,17 +1,12 @@
-from fastapi import FastAPI, Request, Response, status
-from fastapi.responses import JSONResponse
 import uvicorn
 import requests
+from fastapi import FastAPI, Request, Response, status, HTTPException
+from fastapi.responses import JSONResponse
 from db import MySqlManager, DB_NAME, extract_transaction, Transaction
-import json
+from db.exceptions import CategoryIdNotExist, UserIdNotExist
 
 app = FastAPI()
 db_manager = MySqlManager(DB_NAME)
-
-
-@app.get("/sanity")
-def sanity_check():
-    return {"Message": "Hello World"}
 
 
 @app.get("/transactions", status_code=status.HTTP_200_OK)
@@ -24,8 +19,19 @@ def get_transactions():
 async def add_transaction(request: Request):
     transaction_data = await request.json()
     transaction = extract_transaction(transaction_data)
-    db_manager.add_transaction(transaction)
-    return {"Message": "Transaction added successfully"}
+    try:
+        db_manager.add_transaction(transaction)
+        return {"Message": "Transaction added successfully"}
+    except CategoryIdNotExist as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=e.message,
+        )
+    except UserIdNotExist as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=e.message,
+        )
 
 
 # @app.get("/check")

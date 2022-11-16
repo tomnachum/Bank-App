@@ -16,3 +16,11 @@ def insert_into_users(user: User):
             INSERT IGNORE INTO {USERS_TABLE_NAME} VALUES
             ({user.id}, '{user.name}', {user.balance})
     """
+
+
+def get_user_by_id(userId: int):
+    return f"""
+        SELECT *
+        FROM {USERS_TABLE_NAME}
+        WHERE id={userId}
+    """

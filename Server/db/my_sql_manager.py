@@ -3,6 +3,7 @@ from db.db_manager import DataBaseManager
 from db.objects import User, Category, Transaction, extract_transaction
 from db.queries import *
 from db.utils import get_connection_to_db, CATEGORY, TOTAL_AMOUNT
+from db.exceptions import CategoryIdNotExist, UserIdNotExist
 
 
 class MySqlManager(DataBaseManager):
@@ -28,12 +29,24 @@ class MySqlManager(DataBaseManager):
         query = insert_into_categories(category)
         self._execute_query(query)
 
+    def _is_category_exist(self, categoryId: int) -> bool:
+        query = get_category_by_id(categoryId)
+        result = self._execute_query(query)
+        return len(result) != 0
+
+    def _is_user_exist(self, userId: int) -> bool:
+        query = get_user_by_id(userId)
+        result = self._execute_query(query)
+        print(len(result) != 0)
+        return len(result) != 0
+
     def add_transaction(self, transaction: Transaction) -> None:
-        print("in add")
-        print(transaction.amount)
+        if not self._is_category_exist(transaction.categoryId):
+            raise CategoryIdNotExist()
+        if not self._is_user_exist(transaction.userId):
+            raise UserIdNotExist()
         query = insert_into_transactions(transaction)
         self._execute_query(query)
-        print("finished add")
 
     def get_all_transactions(self) -> List[Transaction]:
         query = get_all_transactions
