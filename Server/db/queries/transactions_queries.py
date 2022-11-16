@@ -42,3 +42,11 @@ get_amount_by_category = f"""
     ON c.id = t.categoryId
     GROUP BY t.categoryId
 """
+
+
+def get_transaction_by_id(transaction_id: int):
+    return f"""
+        SELECT *
+        FROM {c.TRANSACTIONS_TABLE_NAME}
+        WHERE id={transaction_id}
+    """

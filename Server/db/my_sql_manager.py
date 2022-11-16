@@ -3,7 +3,7 @@ from db.db_manager import DataBaseManager
 from db.objects import User, Category, Transaction, extract_transaction
 from db.queries import *
 from db.utils import get_connection_to_db, CATEGORY, TOTAL_AMOUNT
-from db.exceptions import CategoryIdNotExist, UserIdNotExist
+from db.exceptions import CategoryIdNotExist, UserIdNotExist, TransactionIdNotExist
 
 
 class MySqlManager(DataBaseManager):
@@ -29,17 +29,6 @@ class MySqlManager(DataBaseManager):
         query = insert_into_categories(category)
         self._execute_query(query)
 
-    def _is_category_exist(self, categoryId: int) -> bool:
-        query = get_category_by_id(categoryId)
-        result = self._execute_query(query)
-        return len(result) != 0
-
-    def _is_user_exist(self, userId: int) -> bool:
-        query = get_user_by_id(userId)
-        result = self._execute_query(query)
-        print(len(result) != 0)
-        return len(result) != 0
-
     def add_transaction(self, transaction: Transaction) -> None:
         if not self._is_category_exist(transaction.categoryId):
             raise CategoryIdNotExist()
@@ -47,6 +36,21 @@ class MySqlManager(DataBaseManager):
             raise UserIdNotExist()
         query = insert_into_transactions(transaction)
         self._execute_query(query)
+
+    def _is_category_exist(self, category_id: int) -> bool:
+        query = get_category_by_id(category_id)
+        result = self._execute_query(query)
+        return len(result) != 0
+
+    def _is_user_exist(self, user_id: int) -> bool:
+        query = get_user_by_id(user_id)
+        result = self._execute_query(query)
+        return len(result) != 0
+
+    def _is_transaction_exist(self, transaction_id: int) -> bool:
+        query = get_transaction_by_id(transaction_id)
+        result = self._execute_query(query)
+        return len(result) != 0
 
     def get_all_transactions(self) -> List[Transaction]:
         query = get_all_transactions
@@ -57,6 +61,8 @@ class MySqlManager(DataBaseManager):
         ]
 
     def delete_transaction(self, transaction_id: int) -> None:
+        if not self._is_transaction_exist(transaction_id):
+            raise TransactionIdNotExist()
         query = delete_transaction_by_id(transaction_id)
         self._execute_query(query)
 

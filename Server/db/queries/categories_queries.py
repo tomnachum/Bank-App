@@ -17,9 +17,9 @@ def insert_into_categories(category: Category):
     """
 
 
-def get_category_by_id(categoryId: int):
+def get_category_by_id(category_id: int):
     return f"""
         SELECT *
         FROM {CATEGORIES_TABLE_NAME}
-        WHERE id={categoryId}
+        WHERE id={category_id}
     """

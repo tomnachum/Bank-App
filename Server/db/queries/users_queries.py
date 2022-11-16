@@ -18,9 +18,9 @@ def insert_into_users(user: User):
     """
 
 
-def get_user_by_id(userId: int):
+def get_user_by_id(user_id: int):
     return f"""
         SELECT *
         FROM {USERS_TABLE_NAME}
-        WHERE id={userId}
+        WHERE id={user_id}
     """
