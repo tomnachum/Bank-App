@@ -1,8 +1,6 @@
 import uvicorn
-import requests
-from fastapi import FastAPI, Request, Response, status, HTTPException
-from fastapi.responses import JSONResponse
-from db import MySqlManager, DB_NAME, extract_transaction, Transaction
+from fastapi import FastAPI, Request, status, HTTPException
+from db import MySqlManager, DB_NAME, extract_transaction
 from db.exceptions import CategoryIdNotExist, UserIdNotExist, TransactionIdNotExist
 
 app = FastAPI()
@@ -50,6 +48,12 @@ def delete_transaction(id: int):
 def get_categories_breakdown():
     breakdown = db_manager.get_breakdown_by_categories()
     return {"breakdown": breakdown}
+
+
+@app.get("/categories", status_code=status.HTTP_200_OK)
+def get_all_categories():
+    categories = db_manager.get_all_categories()
+    return {"categories": categories}
 
 
 if __name__ == "__main__":

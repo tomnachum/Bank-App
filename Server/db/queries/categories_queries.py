@@ -23,3 +23,9 @@ def get_category_by_id(category_id: int):
         FROM {CATEGORIES_TABLE_NAME}
         WHERE id={category_id}
     """
+
+
+get_all_categories = f"""
+    SELECT * 
+    FROM {CATEGORIES_TABLE_NAME}
+    """

@@ -1,6 +1,12 @@
 from typing import List, Dict
 from db.db_manager import DataBaseManager
-from db.objects import User, Category, Transaction, extract_transaction
+from db.objects import (
+    User,
+    Category,
+    Transaction,
+    extract_transaction,
+    extract_category,
+)
 from db.queries import *
 from db.utils import get_connection_to_db, CATEGORY, TOTAL_AMOUNT
 from db.exceptions import CategoryIdNotExist, UserIdNotExist, TransactionIdNotExist
@@ -75,3 +81,8 @@ class MySqlManager(DataBaseManager):
             total_amount = float(item.get(TOTAL_AMOUNT, 0))
             categories_total[category_name] = total_amount
         return categories_total
+
+    def get_all_categories(self) -> List[Category]:
+        query = get_all_categories
+        categories_data = self._execute_query(query)
+        return [extract_category(category_data) for category_data in categories_data]
