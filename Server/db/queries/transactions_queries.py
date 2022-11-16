@@ -1,5 +1,5 @@
-import utils.constants as c
-from objects.transaction import Transaction
+from db.utils import constants as c
+from db.objects import Transaction
 
 create_transactions_table = f"""
             CREATE TABLE IF NOT EXISTS {c.TRANSACTIONS_TABLE_NAME}(

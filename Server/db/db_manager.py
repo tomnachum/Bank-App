@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
-from objects.user import User
-from objects.category import Category
-from objects.transaction import Transaction
 from typing import List, Dict
+from db.objects import User, Category, Transaction
 
 
 class DataBaseManager(ABC):

@@ -1,8 +1,8 @@
-import utils.constants as c
-from objects.user import User
+from db.utils.constants import USERS_TABLE_NAME
+from db.objects import User
 
 create_users_table = f"""
-            CREATE TABLE IF NOT EXISTS users(
+            CREATE TABLE IF NOT EXISTS {USERS_TABLE_NAME}(
                 id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255),
                 balance FLOAT,
@@ -13,6 +13,6 @@ create_users_table = f"""
 
 def insert_into_users(user: User):
     return f"""
-            INSERT IGNORE INTO {c.USERS_TABLE_NAME} VALUES
+            INSERT IGNORE INTO {USERS_TABLE_NAME} VALUES
             ({user.id}, '{user.name}', {user.balance})
     """

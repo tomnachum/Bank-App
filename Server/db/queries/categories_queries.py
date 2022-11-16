@@ -1,8 +1,8 @@
-import utils.constants as c
-from objects.category import Category
+from db.utils.constants import CATEGORIES_TABLE_NAME
+from db.objects import Category
 
 create_categories_table = f"""
-            CREATE TABLE IF NOT EXISTS {c.CATEGORIES_TABLE_NAME}(
+            CREATE TABLE IF NOT EXISTS {CATEGORIES_TABLE_NAME}(
                 id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255),
                 UNIQUE (name)
@@ -12,6 +12,6 @@ create_categories_table = f"""
 
 def insert_into_categories(category: Category):
     return f"""
-            INSERT IGNORE INTO {c.CATEGORIES_TABLE_NAME} VALUES
+            INSERT IGNORE INTO {CATEGORIES_TABLE_NAME} VALUES
             ({category.id}, '{category.name}')
     """

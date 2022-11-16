@@ -1,16 +1,14 @@
 import json
-import utils.constants as c
-from my_sql_manager import MySqlManager
-from utils.connection import get_connection_to_db, get_general_connection
-from queries.general_queries import create_db as q_create_db, delete_db
-from queries.categories_queries import create_categories_table
-from queries.transactions_queries import create_transactions_table
-from queries.users_queries import create_users_table
-from objects.raw_data_to_object import (
-    extract_category,
-    extract_transaction,
-    extract_user,
+from db.utils import constants as c, get_connection_to_db, get_general_connection
+from db.my_sql_manager import MySqlManager
+from db.queries import (
+    create_db as q_create_db,
+    delete_db,
+    create_categories_table,
+    create_transactions_table,
+    create_users_table,
 )
+from db.objects import extract_category, extract_transaction, extract_user, Transaction
 
 
 def create_db():

@@ -1,5 +1,5 @@
 import pymysql
-import utils.constants as c
+from db.utils import constants as c
 
 
 def get_general_connection():

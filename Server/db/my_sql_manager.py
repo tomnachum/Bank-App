@@ -1,14 +1,8 @@
-from objects.user import User
-from objects.category import Category
-from objects.transaction import Transaction
-from utils.connection import get_connection_to_db
-import queries.categories_queries as categories_queries
-import queries.transactions_queries as transactions_queries
-import queries.users_queries as users_queries
-from db_manager import DataBaseManager
-from objects.raw_data_to_object import extract_transaction
 from typing import List, Dict
-import utils.constants as c
+from db.db_manager import DataBaseManager
+from db.objects import User, Category, Transaction, extract_transaction
+from db.queries import *
+from db.utils import get_connection_to_db, CATEGORY, TOTAL_AMOUNT
 
 
 class MySqlManager(DataBaseManager):
@@ -27,19 +21,22 @@ class MySqlManager(DataBaseManager):
             return result
 
     def add_user(self, user: User) -> None:
-        query = users_queries.insert_into_users(user)
+        query = insert_into_users(user)
         self._execute_query(query)
 
     def add_category(self, category: Category) -> None:
-        query = categories_queries.insert_into_categories(category)
+        query = insert_into_categories(category)
         self._execute_query(query)
 
     def add_transaction(self, transaction: Transaction) -> None:
-        query = transactions_queries.insert_into_transactions(transaction)
+        print("in add")
+        print(transaction.amount)
+        query = insert_into_transactions(transaction)
         self._execute_query(query)
+        print("finished add")
 
     def get_all_transactions(self) -> List[Transaction]:
-        query = transactions_queries.get_all_transactions
+        query = get_all_transactions
         transactions_data = self._execute_query(query)
         return [
             extract_transaction(transaction_data)
@@ -47,20 +44,15 @@ class MySqlManager(DataBaseManager):
         ]
 
     def delete_transaction(self, transaction_id: int) -> None:
-        query = transactions_queries.delete_transaction_by_id(transaction_id)
+        query = delete_transaction_by_id(transaction_id)
         self._execute_query(query)
 
     def get_breakdown_by_categories(self) -> Dict[str, float]:
-        query = transactions_queries.get_amount_by_category
+        query = get_amount_by_category
         data = self._execute_query(query)
         categories_total = dict()
         for item in data:
-            category_name = item.get(c.CATEGORY, "")
-            total_amount = float(item.get(c.TOTAL_AMOUNT, 0))
+            category_name = item.get(CATEGORY, "")
+            total_amount = float(item.get(TOTAL_AMOUNT, 0))
             categories_total[category_name] = total_amount
         return categories_total
-
-
-if __name__ == "__main__":
-    db = MySqlManager("bank")
-    print(db.get_breakdown_by_categories())
