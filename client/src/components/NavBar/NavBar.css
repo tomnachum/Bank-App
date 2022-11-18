@@ -2,3 +2,11 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.minus {
+  color: red;
+}
+
+.plus {
+  color: green;
+}

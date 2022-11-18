@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar(props) {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand style={{ marginLeft: "20px" }}>Bank App</Navbar.Brand>
@@ -27,7 +27,14 @@ export default function NavBar() {
         style={{ marginRight: "20px" }}
         className="justify-content-end"
       >
-        <Navbar.Text>Balance:</Navbar.Text>
+        <Navbar.Text>
+          <div>
+            <strong>Balance: </strong>
+            <span className={props.balance > 0 ? "plus" : "minus"}>
+              {props.balance}
+            </span>
+          </div>
+        </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>
   );
