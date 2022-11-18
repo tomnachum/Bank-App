@@ -35,7 +35,7 @@ export default function Transaction(props) {
           pill
           className="center-vertically amount"
         >
-          {Math.abs(props.transaction.amount)}
+          {props.transaction.amount}
         </Badge>
       </div>
     </ListGroup.Item>

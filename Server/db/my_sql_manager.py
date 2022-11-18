@@ -83,10 +83,5 @@ class MySqlManager(DataBaseManager):
     # other operations
     def get_breakdown_by_categories(self) -> Dict[str, float]:
         query = get_amount_by_category
-        data = self._execute_query(query)
-        categories_total = dict()
-        for item in data:
-            category_name = item.get(CATEGORY, "")
-            total_amount = float(item.get(TOTAL_AMOUNT, 0))
-            categories_total[category_name] = total_amount
-        return categories_total
+        breakdown = self._execute_query(query)
+        return breakdown
