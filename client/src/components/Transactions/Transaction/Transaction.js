@@ -5,14 +5,18 @@ import Badge from "react-bootstrap/Badge";
 
 export default function Transaction(props) {
   function getDate() {
-    const date = props.transaction.date.split(" ")[0];
-    const [year, month, day] = date.split("-");
+    const date = props.transaction.date;
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
     return `${day}/${month}/${year}`;
   }
 
-  function getHour() {
-    const time = props.transaction.date.split(" ")[1];
-    return time.slice(0, -3);
+  function getTime() {
+    const date = props.transaction.date;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
   }
 
   return (
@@ -27,7 +31,7 @@ export default function Transaction(props) {
         </div>
         <div className="ms-2 center-vertically">
           <div>{getDate()}</div>
-          {getHour()}
+          {getTime()}
         </div>
         <Badge
           bg={props.transaction.amount > 0 ? "success" : "danger"}

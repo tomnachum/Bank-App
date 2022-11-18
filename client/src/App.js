@@ -11,6 +11,7 @@ import Operations from "./components/Operations/Operations";
 import Breakdown from "./components/Breakdown/Breakdown";
 import { useState } from "react";
 import Transaction from "./objects/Transaction";
+import parseDate from "./utils/ParseDate";
 
 const USER_ID = 0;
 
@@ -100,7 +101,7 @@ function App() {
       id: 10,
       amount: 70,
       vendor: "Yossi",
-      date: "2022-13-10 08:52:09",
+      date: "2022-11-10 08:52:09",
       categoryId: 11,
       userId: 0,
     },
@@ -126,7 +127,7 @@ function App() {
         new Transaction(
           t.amount,
           t.vendor,
-          t.date,
+          parseDate(t.date),
           categories.find(c => c.id === t.categoryId).name
         )
     );
