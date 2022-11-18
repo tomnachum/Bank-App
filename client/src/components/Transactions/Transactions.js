@@ -17,14 +17,9 @@ export default function Transactions() {
             <div className="fw-bold">Category</div>
             vendor
           </div>
-          <div className="ms-2 me-auto" style={{ margin: "auto" }}>
-            date
-          </div>
-          <Badge bg="success" pill style={{ padding: "11px", fontSize: 13 }}>
+          <div className="ms-2 me-auto center-vertically">date</div>
+          <Badge bg="success" pill className="center-vertically amount">
             positive amount
-          </Badge>
-          <Badge bg="danger" pill style={{ padding: "11px", fontSize: 13 }}>
-            negative amount
           </Badge>
         </ListGroup.Item>
       </ListGroup>

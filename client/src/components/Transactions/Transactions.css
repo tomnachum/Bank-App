@@ -1,3 +1,9 @@
 .amount {
-  font-size: 20;
+  font-size: 13px;
+  padding: 11px;
+}
+
+.center-vertically {
+  margin-top: auto;
+  margin-bottom: auto;
 }
