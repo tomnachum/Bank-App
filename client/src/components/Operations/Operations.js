@@ -6,8 +6,8 @@ import Form from "react-bootstrap/Form";
 
 export default function Operations() {
   return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Header as="h6">Insert Transaction</Card.Header>
+    <Card style={{ width: "25rem" }}>
+      <Card.Header as="h3">Insert Transaction</Card.Header>
       <Card.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
