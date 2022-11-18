@@ -15,16 +15,22 @@ function App() {
     <Router>
       <div className="app">
         <NavBar></NavBar>
-        <Switch>
-          <Route
-            exact
-            path="/transactions"
-            render={() => <Transactions />}
-          ></Route>
-          <Route exact path="/operations" render={() => <Operations />}></Route>
-          <Route exact path="/breakdown" render={() => <Breakdown />}></Route>
-          <Redirect to="/transactions" />
-        </Switch>
+        <div className="routes">
+          <Switch>
+            <Route
+              exact
+              path="/transactions"
+              render={() => <Transactions />}
+            ></Route>
+            <Route
+              exact
+              path="/operations"
+              render={() => <Operations />}
+            ></Route>
+            <Route exact path="/breakdown" render={() => <Breakdown />}></Route>
+            <Redirect to="/transactions" />
+          </Switch>
+        </div>
       </div>
     </Router>
   );
