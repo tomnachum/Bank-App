@@ -25,10 +25,7 @@ export default function Transaction(props) {
       className="d-flex justify-content-between align-items-start"
     >
       <div className="container">
-        <div className="ms-2">
-          <div className="fw-bold">{props.transaction.category}</div>
-          {props.transaction.vendor}
-        </div>
+        <div className="ms-2">{props.transaction.vendor}</div>
         <div className="ms-2 center-vertically">
           <div>{getDate()}</div>
           {getTime()}

@@ -1,10 +1,19 @@
 import uvicorn
 from fastapi import FastAPI, Request, status, HTTPException
-from db import MySqlManager, DB_NAME, extract_transaction
+from fastapi.middleware.cors import CORSMiddleware
+from db import MySqlManager, DB_NAME, CLIENT_DOMAIN, extract_transaction
 from db.exceptions import CategoryIdNotExist, UserIdNotExist, TransactionIdNotExist
 
 app = FastAPI()
 db_manager = MySqlManager(DB_NAME)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[CLIENT_DOMAIN],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/transactions", status_code=status.HTTP_200_OK)
