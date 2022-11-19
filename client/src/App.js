@@ -11,8 +11,6 @@ import Operations from "./components/Operations/Operations";
 import Breakdown from "./components/Breakdown/Breakdown";
 import { useState } from "react";
 
-const USER_ID = 0;
-
 function App() {
   const balance = 20;
 
