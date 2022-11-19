@@ -6,7 +6,7 @@ import * as c from "../../../utils/Constants";
 import axios from "axios";
 import "./InsertTransaction.css";
 
-export default function InsertTransaction() {
+export default function InsertTransaction(props) {
   const [categories, setCategories] = useState([]);
   const [transactionInput, setTransactionInput] = useState({
     amount: "",
@@ -31,22 +31,24 @@ export default function InsertTransaction() {
     });
   }
 
-  const handleSubmit = e => {
+  async function handleSubmit(e) {
     const form = e.currentTarget;
     e.preventDefault();
     e.stopPropagation();
     if (form.checkValidity() === true) {
+      alert("Transaction added successfully!");
       let sign = e.nativeEvent.submitter.name === "Deposit" ? 1 : -1;
-      axios.post(c.SERVER_DOMAIN + c.TRANSACTIONS, {
+      await axios.post(c.SERVER_DOMAIN + c.TRANSACTIONS, {
         amount: sign * +transactionInput.amount,
         vendor: transactionInput.vendor,
         categoryId: transactionInput.categoryId,
         userId: c.USER_ID,
       });
+      props.updateBalance();
     }
 
     setValidated(true);
-  };
+  }
 
   return (
     <div>

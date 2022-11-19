@@ -44,7 +44,8 @@ async def add_transaction(request: Request):
 @app.delete("/transactions/{id}", status_code=status.HTTP_200_OK)
 def delete_transaction(id: int):
     try:
-        db_manager.delete_transaction(id)
+        transaction = db_manager.get_transaction_by_id(id)
+        db_manager.delete_transaction(transaction)
         return {"Message": "Transaction deleted successfully"}
     except TransactionIdNotExist as e:
         raise HTTPException(

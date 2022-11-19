@@ -9,7 +9,7 @@ import parseDate from "../../utils/ParseDate";
 import axios from "axios";
 import * as c from "../../utils/Constants";
 
-export default function Transactions() {
+export default function Transactions(props) {
   const [transactions, setTransactions] = useState([]);
 
   async function fetchTransactions() {
@@ -33,8 +33,10 @@ export default function Transactions() {
   }, []);
 
   async function deleteTransaction(id) {
+    alert("Transaction deleted successfully!");
     await axios.delete(c.SERVER_DOMAIN + c.TRANSACTIONS + `/${id}`);
-    fetchTransactions();
+    await fetchTransactions();
+    props.updateBalance();
   }
 
   return (

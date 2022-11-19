@@ -9,10 +9,24 @@ import NavBar from "./components/NavBar/NavBar";
 import Transactions from "./components/Transactions/Transactions";
 import Operations from "./components/Operations/Operations";
 import Breakdown from "./components/Breakdown/Breakdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import * as c from "./utils/Constants";
 
 function App() {
-  const balance = 20;
+  const [balance, setBalance] = useState(0);
+
+  async function fetchBalance() {
+    const res = await axios.get(
+      `${c.SERVER_DOMAIN}${c.USERS}/${c.USER_ID}/${c.BALANCE}`
+    );
+    const balance = res.data.balance;
+    setBalance(balance);
+  }
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
 
   return (
     <Router>
@@ -23,12 +37,12 @@ function App() {
             <Route
               exact
               path="/transactions"
-              render={() => <Transactions />}
+              render={() => <Transactions updateBalance={fetchBalance} />}
             ></Route>
             <Route
               exact
               path="/operations"
-              render={() => <Operations />}
+              render={() => <Operations updateBalance={fetchBalance} />}
             ></Route>
             <Route exact path="/breakdown" render={() => <Breakdown />}></Route>
             <Redirect to="/transactions" />

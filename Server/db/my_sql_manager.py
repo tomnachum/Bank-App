@@ -37,11 +37,12 @@ class MySqlManager(DataBaseManager):
         self._execute_query(query)
         self._update_balance(transaction.userId, transaction.amount)
 
-    def delete_transaction(self, transaction_id: int) -> None:
-        if not self._is_transaction_exist(transaction_id):
+    def delete_transaction(self, transaction: Transaction) -> None:
+        if not self._is_transaction_exist(transaction.id):
             raise TransactionIdNotExist()
-        query = delete_transaction_by_id(transaction_id)
+        query = delete_transaction_by_id(transaction.id)
         self._execute_query(query)
+        self._update_balance(transaction.userId, -transaction.amount)
 
     def _is_transaction_exist(self, transaction_id: int) -> bool:
         query = get_transaction_by_id(transaction_id)
@@ -56,6 +57,13 @@ class MySqlManager(DataBaseManager):
             for transaction_data in transactions_data
         ]
 
+    def get_transaction_by_id(self, id: int) -> Transaction:
+        if not self._is_transaction_exist(id):
+            raise TransactionIdNotExist()
+        query = get_transaction_by_id(id)
+        result = self._execute_query(query)
+        return extract_transaction(result[0])
+
     # users operations
     def add_user(self, user: User) -> None:
         query = insert_into_users(user)
@@ -66,11 +74,11 @@ class MySqlManager(DataBaseManager):
         result = self._execute_query(query)
         return len(result) != 0
 
-    def _update_balance(self, user_id: int, to_add: float):
+    def _update_balance(self, user_id: int, to_add: float) -> None:
         query = update_balance(user_id, to_add)
         self._execute_query(query)
 
-    def get_balance(self, user_id: int):
+    def get_balance(self, user_id: int) -> float:
         if not self._is_user_exist(user_id):
             raise UserIdNotExist()
         query = get_balance(user_id)
