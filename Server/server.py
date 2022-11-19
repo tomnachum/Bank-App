@@ -65,5 +65,17 @@ def get_all_categories():
     return {"categories": categories}
 
 
+@app.get("/users/{id}/balance", status_code=status.HTTP_200_OK)
+def get_user_balance(id):
+    try:
+        balance = db_manager.get_balance(id)
+        return {"balance": balance}
+    except UserIdNotExist as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message,
+        )
+
+
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)

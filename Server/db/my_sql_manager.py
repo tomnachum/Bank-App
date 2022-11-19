@@ -8,7 +8,7 @@ from db.objects import (
     extract_category,
 )
 from db.queries import *
-from db.utils import get_connection_to_db, CATEGORY, TOTAL_AMOUNT
+from db.utils import get_connection_to_db, USER_BALANCE
 from db.exceptions import CategoryIdNotExist, UserIdNotExist, TransactionIdNotExist
 
 
@@ -35,6 +35,7 @@ class MySqlManager(DataBaseManager):
             raise UserIdNotExist()
         query = insert_into_transactions(transaction)
         self._execute_query(query)
+        self._update_balance(transaction.userId, transaction.amount)
 
     def delete_transaction(self, transaction_id: int) -> None:
         if not self._is_transaction_exist(transaction_id):
@@ -64,6 +65,17 @@ class MySqlManager(DataBaseManager):
         query = get_user_by_id(user_id)
         result = self._execute_query(query)
         return len(result) != 0
+
+    def _update_balance(self, user_id: int, to_add: float):
+        query = update_balance(user_id, to_add)
+        self._execute_query(query)
+
+    def get_balance(self, user_id: int):
+        if not self._is_user_exist(user_id):
+            raise UserIdNotExist()
+        query = get_balance(user_id)
+        result = self._execute_query(query)
+        return result[0].get(USER_BALANCE, 0)
 
     # categories operations
     def add_category(self, category: Category) -> None:

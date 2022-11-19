@@ -24,3 +24,19 @@ def get_user_by_id(user_id: int):
         FROM {USERS_TABLE_NAME}
         WHERE id={user_id}
     """
+
+
+def update_balance(user_id: int, to_add: float):
+    return f"""
+        UPDATE {USERS_TABLE_NAME}
+        SET balance = balance + {to_add}
+        WHERE id={user_id}
+    """
+
+
+def get_balance(user_id: int):
+    return f"""
+        SELECT balance
+        FROM {USERS_TABLE_NAME}
+        WHERE id={user_id}
+    """
