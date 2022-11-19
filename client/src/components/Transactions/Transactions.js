@@ -12,30 +12,41 @@ import * as c from "../../utils/Constants";
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
 
+  async function fetchTransactions() {
+    const res = await axios.get(c.SERVER_DOMAIN + c.TRANSACTIONS);
+    const transactionsData = res.data.transactions;
+    const transactionsObj = transactionsData.map(
+      t =>
+        new TransactionObj(
+          t.id,
+          t.amount,
+          t.vendor,
+          parseDate(t.date),
+          t.categoryId
+        )
+    );
+    setTransactions(transactionsObj);
+  }
+
   useEffect(() => {
-    async function fetchTransactions() {
-      const res = await axios.get(c.SERVER_DOMAIN + c.TRANSACTIONS);
-      const transactionsData = res.data.transactions;
-      const transactionsObj = transactionsData.map(
-        t =>
-          new TransactionObj(
-            t.amount,
-            t.vendor,
-            parseDate(t.date),
-            t.categoryId
-          )
-      );
-      setTransactions(transactionsObj);
-    }
     fetchTransactions();
   }, []);
+
+  async function deleteTransaction(id) {
+    await axios.delete(c.SERVER_DOMAIN + c.TRANSACTIONS + `/${id}`);
+    fetchTransactions();
+  }
 
   return (
     <Card style={{ width: "35rem" }}>
       <Card.Header as="h3">Transactions</Card.Header>
       <ListGroup as="ol">
         {transactions.sort(transactionsComparator).map((t, i) => (
-          <Transaction key={i} transaction={t}></Transaction>
+          <Transaction
+            key={i}
+            transaction={t}
+            delete={deleteTransaction}
+          ></Transaction>
         ))}
       </ListGroup>
     </Card>

@@ -2,6 +2,9 @@ import React from "react";
 import "./Transaction.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/Button";
 
 export default function Transaction(props) {
   function getDate() {
@@ -37,6 +40,15 @@ export default function Transaction(props) {
         >
           {props.transaction.amount}
         </Badge>
+        <Button
+          onClick={() => {
+            props.delete(props.transaction.id);
+          }}
+          variant="outline-dark"
+          className="delete-btn"
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
       </div>
     </ListGroup.Item>
   );
