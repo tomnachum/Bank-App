@@ -45,9 +45,15 @@ export default function InsertTransaction(props) {
         userId: c.USER_ID,
       });
       props.updateBalance();
+      setTransactionInput({
+        amount: "",
+        vendor: "",
+        categoryId: "",
+      });
+      setValidated(false);
+    } else {
+      setValidated(true);
     }
-
-    setValidated(true);
   }
 
   return (
