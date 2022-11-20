@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import * as c from "../../../utils/Constants";
 import axios from "axios";
 import "./InsertTransaction.css";
+import Notification from "../../../ui-components/Notification/Notification";
 
 export default function InsertTransaction(props) {
   const [categories, setCategories] = useState([]);
@@ -14,6 +15,7 @@ export default function InsertTransaction(props) {
     categoryId: "",
   });
   const [validated, setValidated] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -36,7 +38,7 @@ export default function InsertTransaction(props) {
     e.preventDefault();
     e.stopPropagation();
     if (form.checkValidity() === true) {
-      alert("Transaction added successfully!");
+      setIsModalOpen(true);
       let sign = e.nativeEvent.submitter.name === "Deposit" ? 1 : -1;
       await axios.post(c.SERVER_DOMAIN + c.TRANSACTIONS, {
         amount: sign * +transactionInput.amount,
@@ -140,6 +142,11 @@ export default function InsertTransaction(props) {
           </Form>
         </Card.Body>
       </Card>
+      <Notification
+        show={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        msg="Transaction added successfully."
+      ></Notification>
     </div>
   );
 }
