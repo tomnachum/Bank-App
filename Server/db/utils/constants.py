@@ -35,6 +35,3 @@ CONNECTION_CHARSET = "utf8"
 # BREAKDOWN QUERY
 CATEGORY = "category"
 TOTAL_AMOUNT = "total"
-
-# CLIENT
-CLIENT_DOMAIN = "http://localhost:3000"
