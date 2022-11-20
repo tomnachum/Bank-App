@@ -10,17 +10,13 @@ import Transactions from "./components/Transactions/Transactions";
 import Operations from "./components/Operations/Operations";
 import Breakdown from "./components/Breakdown/Breakdown";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import * as c from "./utils/Constants";
+import ApiCallsManager from "./utils/ApiCallsManager";
 
 function App() {
   const [balance, setBalance] = useState(0);
 
   async function fetchBalance() {
-    const res = await axios.get(
-      `${c.SERVER_DOMAIN}${c.USERS}/${c.USER_ID}/${c.BALANCE}`
-    );
-    const balance = res.data.balance;
+    const balance = await ApiCallsManager.getBalance();
     setBalance(balance);
   }
 

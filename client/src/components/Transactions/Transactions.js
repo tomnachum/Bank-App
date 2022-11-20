@@ -6,17 +6,16 @@ import Transaction from "./Transaction/Transaction";
 import transactionsComparator from "../../utils/TransactionsComparator";
 import TransactionObj from "../../objects/TransactionObj";
 import parseDate from "../../utils/ParseDate";
-import axios from "axios";
 import * as c from "../../utils/Constants";
 import Notification from "../../ui-components/Notification/Notification";
+import ApiCallsManager from "../../utils/ApiCallsManager";
 
 export default function Transactions(props) {
   const [transactions, setTransactions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   async function fetchTransactions() {
-    const res = await axios.get(c.SERVER_DOMAIN + c.TRANSACTIONS);
-    const transactionsData = res.data.transactions;
+    const transactionsData = await ApiCallsManager.getTransactions();
     const transactionsObj = transactionsData.map(
       t =>
         new TransactionObj(
@@ -24,7 +23,8 @@ export default function Transactions(props) {
           t.amount,
           t.vendor,
           parseDate(t.date),
-          t.categoryId
+          t.categoryId,
+          c.USER_ID
         )
     );
     setTransactions(transactionsObj);
@@ -36,14 +36,14 @@ export default function Transactions(props) {
 
   async function deleteTransaction(id) {
     setIsModalOpen(true);
-    await axios.delete(c.SERVER_DOMAIN + c.TRANSACTIONS + `/${id}`);
+    await ApiCallsManager.deleteTransaction(id);
     await fetchTransactions();
     props.updateBalance();
   }
 
   return (
     <>
-      <Card style={{ width: "35rem" }}>
+      <Card style={{ width: "35rem", margin: "auto" }}>
         <Card.Header as="h3">Transactions</Card.Header>
         <ListGroup as="ol">
           {transactions.sort(transactionsComparator).map((t, i) => (

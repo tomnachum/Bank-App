@@ -3,9 +3,10 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import * as c from "../../../utils/Constants";
-import axios from "axios";
 import "./InsertTransaction.css";
 import Notification from "../../../ui-components/Notification/Notification";
+import ApiCallsManager from "../../../utils/ApiCallsManager";
+import TransactionObj from "../../../objects/TransactionObj";
 
 export default function InsertTransaction(props) {
   const [categories, setCategories] = useState([]);
@@ -19,9 +20,8 @@ export default function InsertTransaction(props) {
 
   useEffect(() => {
     async function fetchCategories() {
-      const res = await axios.get(c.SERVER_DOMAIN + c.CATEGORIES);
-      const categories = res.data.categories;
-      setCategories(categories);
+      const categoriesData = await ApiCallsManager.getCategories();
+      setCategories(categoriesData);
     }
     fetchCategories();
   }, []);
@@ -40,12 +40,16 @@ export default function InsertTransaction(props) {
     if (form.checkValidity() === true) {
       setIsModalOpen(true);
       let sign = e.nativeEvent.submitter.name === "Deposit" ? 1 : -1;
-      await axios.post(c.SERVER_DOMAIN + c.TRANSACTIONS, {
-        amount: sign * +transactionInput.amount,
-        vendor: transactionInput.vendor,
-        categoryId: transactionInput.categoryId,
-        userId: c.USER_ID,
-      });
+      await ApiCallsManager.addTransaction(
+        new TransactionObj(
+          null,
+          sign * +transactionInput.amount,
+          transactionInput.vendor,
+          null,
+          transactionInput.categoryId,
+          c.USER_ID
+        )
+      );
       props.updateBalance();
       setTransactionInput({
         amount: "",
@@ -60,7 +64,7 @@ export default function InsertTransaction(props) {
 
   return (
     <div>
-      <Card style={{ width: "25rem" }}>
+      <Card style={{ width: "25rem", margin: "auto" }}>
         <Card.Header as="h3">Insert Transaction</Card.Header>
         <Card.Body>
           <Form
