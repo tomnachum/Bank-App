@@ -1,9 +1,9 @@
 import React from "react";
 import "./NavBar.css";
-import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
+import Balance from "./Balance/Balance";
 
 export default function NavBar(props) {
   return (
@@ -28,12 +28,7 @@ export default function NavBar(props) {
         className="justify-content-end"
       >
         <Navbar.Text>
-          <div>
-            <strong>Balance: </strong>
-            <span className={props.balance > 0 ? "plus" : "minus"}>
-              {props.balance}
-            </span>
-          </div>
+          <Balance balance={props.balance}></Balance>
         </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>
