@@ -16,16 +16,13 @@ export default function Breakdown() {
   }, []);
 
   return (
-    <Card style={{ width: "18rem", margin: "auto" }}>
-      <Card.Header as="h3">Breakdown</Card.Header>
-      <ListGroup variant="flush">
-        {breakdown.map((b, i) => (
-          <ListGroup.Item key={i}>
-            <span>{b.category}: </span>
-            <span className="total">{b.total}</span>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Card>
+    <ListGroup style={{ width: "18rem", margin: "auto" }}>
+      {breakdown.map((b, i) => (
+        <ListGroup.Item key={i}>
+          <span>{b.category} </span>
+          <span className="total">{b.total}</span>
+        </ListGroup.Item>
+      ))}
+    </ListGroup>
   );
 }

@@ -12,7 +12,7 @@ export default function Transaction(props) {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
-    return `${day}/${month}/${year}`;
+    return `${day < 10 ? "0" : ""}${day}/${month}/${year}`;
   }
 
   function getTime() {
@@ -29,10 +29,8 @@ export default function Transaction(props) {
     >
       <div className="container">
         <div className="ms-2 center-vertically">{props.transaction.vendor}</div>
-        <div className="ms-2 center-vertically">
-          <div>{getDate()}</div>
-          {getTime()}
-        </div>
+        <div className="ms-2 center-vertically">{getDate()}</div>
+        <div className="ms-2 center-vertically">{getTime()}</div>
         <Badge
           bg={props.transaction.amount > 0 ? "success" : "danger"}
           pill

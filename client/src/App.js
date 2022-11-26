@@ -25,27 +25,33 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="app">
-        <NavBar balance={balance}></NavBar>
-        <div className="routes">
-          <Switch>
-            <Route
-              exact
-              path="/transactions"
-              render={() => <Transactions updateBalance={fetchBalance} />}
-            ></Route>
-            <Route
-              exact
-              path="/operations"
-              render={() => <Operations updateBalance={fetchBalance} />}
-            ></Route>
-            <Route exact path="/breakdown" render={() => <Breakdown />}></Route>
-            <Redirect to="/transactions" />
-          </Switch>
+    <div className="bg">
+      <Router>
+        <div className="app">
+          <NavBar balance={balance}></NavBar>
+          <div className="routes">
+            <Switch>
+              <Route
+                exact
+                path="/transactions"
+                render={() => <Transactions updateBalance={fetchBalance} />}
+              ></Route>
+              <Route
+                exact
+                path="/operations"
+                render={() => <Operations updateBalance={fetchBalance} />}
+              ></Route>
+              <Route
+                exact
+                path="/breakdown"
+                render={() => <Breakdown />}
+              ></Route>
+              <Redirect to="/transactions" />
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 

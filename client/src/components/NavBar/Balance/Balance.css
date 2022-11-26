@@ -5,3 +5,8 @@
 .plus {
   color: green;
 }
+
+.balance {
+  padding: 8px !important;
+  color: rgb(0, 10, 104) !important;
+}

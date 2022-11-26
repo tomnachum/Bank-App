@@ -43,18 +43,15 @@ export default function Transactions(props) {
 
   return (
     <>
-      <Card style={{ width: "35rem", margin: "auto" }}>
-        <Card.Header as="h3">Transactions</Card.Header>
-        <ListGroup as="ol">
-          {transactions.sort(transactionsComparator).map((t, i) => (
-            <Transaction
-              key={i}
-              transaction={t}
-              delete={deleteTransaction}
-            ></Transaction>
-          ))}
-        </ListGroup>
-      </Card>
+      <ListGroup as="ol" style={{ width: "50rem", margin: "auto" }}>
+        {transactions.sort(transactionsComparator).map((t, i) => (
+          <Transaction
+            key={i}
+            transaction={t}
+            delete={deleteTransaction}
+          ></Transaction>
+        ))}
+      </ListGroup>
       <Notification
         show={isModalOpen}
         setIsOpen={setIsModalOpen}
